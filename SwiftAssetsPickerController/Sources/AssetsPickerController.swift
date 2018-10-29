@@ -71,12 +71,11 @@ open class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeOb
 	// MARK: Data loading
 	
 	func loadData() {
-		DispatchQueue.main.async {
-			self.tableView.isUserInteractionEnabled = false
-			self.activityIndicator.startAnimating()
-		}
 		
-		DispatchQueue.global(qos: .default).async {
+        self.tableView.isUserInteractionEnabled = false
+        self.activityIndicator.startAnimating()
+		
+		DispatchQueue.global(qos: .userInitiated).async {
 		
 			self.items.removeAll(keepingCapacity: false)
 			
@@ -177,7 +176,9 @@ open class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeOb
 	// MARK: PHPhotoLibraryChangeObserver
 	
 	open func photoLibraryDidChange(_ changeInstance: PHChange) {
-		loadData()
+        DispatchQueue.main.async {
+            self.loadData()
+        }
 	}
 	
 	// MARK: Other
