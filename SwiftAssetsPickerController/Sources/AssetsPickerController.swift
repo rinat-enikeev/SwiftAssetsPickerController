@@ -201,10 +201,11 @@ open class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeOb
 		var returnImage: UIImage? = nil
 		
 		let fetchOptions = PHFetchOptions()
-		fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
-		
+		fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+		fetchOptions.fetchLimit = 1
+        
 		let fetchResult = (collection == nil) ? PHAsset.fetchAssets(with: .image, options: fetchOptions) : PHAsset.fetchAssets(in: collection!, options: fetchOptions)
-		if let lastAsset = fetchResult.lastObject {
+		if let lastAsset = fetchResult.firstObject {
 			
 			let imageRequestOptions = PHImageRequestOptions()
 			imageRequestOptions.deliveryMode = PHImageRequestOptionsDeliveryMode.fastFormat
