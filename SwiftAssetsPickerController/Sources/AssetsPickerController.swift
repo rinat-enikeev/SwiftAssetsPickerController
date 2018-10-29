@@ -184,8 +184,16 @@ open class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeOb
 	// MARK: Other
 	
 	func assetsCountFromCollection(_ collection: PHAssetCollection?) -> Int {
-		let fetchResult = (collection == nil) ? PHAsset.fetchAssets(with: .image, options: nil) : PHAsset.fetchAssets(in: collection!, options: nil)
-		return fetchResult.count
+        if let collection = collection {
+            let estimated = collection.estimatedAssetCount
+            if estimated == NSNotFound {
+                return 0
+            } else {
+                return estimated
+            }
+        } else {
+            return 1
+        }
 	}
 	
 	func lastImageFromCollection(_ collection: PHAssetCollection?) -> UIImage? {
